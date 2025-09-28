@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+using System.Windows;
 
 public class api
 {
@@ -24,7 +27,15 @@ public class api
         this.sessionid = null;
     }
 
-    // Initialize API session
+    private async Task<T> DeserializeJsonAsync<T>(string json)
+    {
+        using (var ms = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            return (T)serializer.ReadObject(ms);
+        }
+    }
+
     public async Task<bool> InitApiAsync()
     {
         using (HttpClient client = new HttpClient())
@@ -32,27 +43,76 @@ public class api
             try
             {
                 string url = $"https://authsecure.shop/api/initv2.php?name={name}&ownerid={ownerid}&type=init&secret={secret}&version={version}";
+              
                 string responseStr = await client.GetStringAsync(url);
-
-                JObject obj = JObject.Parse(responseStr);
-                if ((bool)obj["success"])
+                if (responseStr == "AuthSecure_Invalid")
                 {
-                    sessionid = obj["sessionid"].ToString();
+                    error("Application not found or invalid credentials!");
+                }
+
+                var obj = await DeserializeJsonAsync<response_structure>(responseStr);
+
+                if (obj.success)
+                {
+                    
+                    string serverVersion = obj.appinfo?.GetType().GetProperty("version")?.GetValue(obj.appinfo)?.ToString();
+                    if (serverVersion != version)
+                    {
+                        error("Version mismatch! Please update the application.");
+                    }
+
+                    sessionid = obj.sessionid;
                     return true;
                 }
+                else
+                {
+                    error("Unknown error during initialization");
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+               
+                Environment.Exit(1);
+            }
         }
         return false;
     }
+    public static void error(string message)
+    {
+        string folder = @"Logs", file = Path.Combine(folder, "ErrorLogs.txt");
 
-    // 🔑 Register user
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        if (!File.Exists(file))
+        {
+            using (FileStream stream = File.Create(file))
+            {
+                File.AppendAllText(file, DateTime.Now + " > This is the start of your error logs file");
+            }
+        }
+
+        File.AppendAllText(file, DateTime.Now + $" > {message}" + Environment.NewLine);
+
+        System.Windows.MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        Environment.Exit(1);
+    }
+
+
+
+
+
+
+
+
+
     public async Task<response_structure> RegisterAsync(string username, string password, string license, string email = null)
     {
         if (string.IsNullOrEmpty(sessionid))
         {
-            bool initSuccess = await InitApiAsync();
-            if (!initSuccess)
+            if (!await InitApiAsync())
                 throw new Exception("Failed to initialize API session.");
         }
 
@@ -60,56 +120,57 @@ public class api
 
         using (HttpClient client = new HttpClient())
         {
-            try
+            string url = $"https://authsecure.shop/api/register.php?username={username}&password={password}&license={license}&email={email}&hwid={hwid}&sessionid={sessionid}&name={name}&ownerid={ownerid}";
+            string responseStr = await client.GetStringAsync(url);
+
+            response = await DeserializeJsonAsync<response_structure>(responseStr);
+
+            if (response.success)
             {
-                string url = $"https://authsecure.shop/api/register.php?username={username}&password={password}&license={license}&email={email}&hwid={hwid}&sessionid={sessionid}&name={name}&ownerid={ownerid}";
-                string responseStr = await client.GetStringAsync(url);
-
-                JObject obj = JObject.Parse(responseStr);
-                response = obj.ToObject<response_structure>();
-
-                if (response.success)
+                var info = response.info;
+                user_data = new user_data_structure
                 {
-                    user_data = new user_data_structure
+                    username = info.username,
+                    subscription = info.subscription,
+                    expiration = info.expiry, // Unix timestamp
+                    ip = info.ip,
+                    hwid = info.hwid,
+                    CreationDate = DateTimeOffset.FromUnixTimeSeconds(info.createdate).DateTime,
+                    LastLoginDate = DateTimeOffset.FromUnixTimeSeconds(info.lastlogin).DateTime,
+                    timeleft = info.timeleft,
+                    subscriptions = new List<subscription_structure>
                     {
-                        username = (string)obj["info"]["username"],
-                        subscription = (string)obj["info"]["subscription"],
-                        expiration = (long)obj["info"]["expiry"],
-                        ip = (string)obj["info"]["ip"],
-                        hwid = (string)obj["info"]["hwid"],
-                        CreationDate = DateTimeOffset.FromUnixTimeSeconds((long)obj["info"]["createdate"]).DateTime,
-                        LastLoginDate = DateTimeOffset.FromUnixTimeSeconds((long)obj["info"]["lastlogin"]).DateTime,
-                        timeleft = (long)obj["info"]["timeleft"]
-                    };
-
-                    user_data.subscriptions = new List<subscription_structure>
-                {
-                    new subscription_structure
-                    {
-                        key = license,
-                        subscription = user_data.subscription,
-                        expiration = user_data.expiration
+                        new subscription_structure
+                        {
+                            key = license,
+                            subscription = info.subscription,
+                            expiration = info.expiry
+                        }
                     }
                 };
-                }
+            }
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Register Error: " + ex.Message);
-            }
+            return response;
         }
     }
+    private long _expirationUnix;
+    public long expiration
+    {
+        get => _expirationUnix;
+        set
+        {
+            _expirationUnix = value;
+            ExpirationDate = DateTimeOffset.FromUnixTimeSeconds(value).DateTime;
+        }
+    }
+    public DateTime ExpirationDate { get; private set; }
 
 
-    // Login user
     public async Task<response_structure> LoginAsync(string username, string password)
     {
         if (string.IsNullOrEmpty(sessionid))
         {
-            bool initSuccess = await InitApiAsync();
-            if (!initSuccess)
+            if (!await InitApiAsync())
                 throw new Exception("Failed to initialize API session.");
         }
 
@@ -117,49 +178,41 @@ public class api
 
         using (HttpClient client = new HttpClient())
         {
-            try
+            string url = $"https://authsecure.shop/api/login.php?username={username}&pass={password}&hwid={hwid}&sessionid={sessionid}&name={name}&ownerid={ownerid}";
+            string responseStr = await client.GetStringAsync(url);
+
+            response = await DeserializeJsonAsync<response_structure>(responseStr);
+
+            if (response.success)
             {
-                string url = $"https://authsecure.shop/api/login.php?username={username}&pass={password}&hwid={hwid}&sessionid={sessionid}&name={name}&ownerid={ownerid}";
-                string responseStr = await client.GetStringAsync(url);
-
-                JObject obj = JObject.Parse(responseStr);
-                response = obj.ToObject<response_structure>();
-
-                if (response.success)
+                var info = response.info;
+                user_data = new user_data_structure
                 {
-                    user_data = new user_data_structure
-                    {
-                        username = (string)obj["info"]["username"],
-                        subscription = (string)obj["info"]["subscription"],
-                        expiration = (long)obj["info"]["expiry"],
-                        ip = (string)obj["info"]["ip"],
-                        hwid = (string)obj["info"]["hwid"],
-                        CreationDate = DateTimeOffset.FromUnixTimeSeconds((long)obj["info"]["createdate"]).DateTime,
-                        LastLoginDate = DateTimeOffset.FromUnixTimeSeconds((long)obj["info"]["lastlogin"]).DateTime,
-                        timeleft = (long)obj["info"]["timeleft"]
-                    };
-
-                    user_data.subscriptions = new List<subscription_structure>
+                    username = info.username,
+                    subscription = info.subscription,
+                    expiration = info.expiry,
+                    ip = info.ip,
+                    hwid = info.hwid,
+                    CreationDate = DateTimeOffset.FromUnixTimeSeconds(info.createdate).DateTime,
+                    LastLoginDate = DateTimeOffset.FromUnixTimeSeconds(info.lastlogin).DateTime,
+                    timeleft = info.timeleft,
+                    subscriptions = new List<subscription_structure>
                     {
                         new subscription_structure
                         {
                             key = "", // no key on login
-                            subscription = user_data.subscription,
-                            expiration = user_data.expiration
+                            subscription = info.subscription,
+                            expiration = info.expiry
                         }
-                    };
-                }
+                    }
+                };
 
-                return response;
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Login Error: " + ex.Message);
-            }
+
+            return response;
         }
     }
 
-    // Remaining days
     public int expirydaysleft()
     {
         if (user_data == null) return 0;
@@ -167,57 +220,69 @@ public class api
     }
 }
 
-// Response structure
+[DataContract]
 public class response_structure
 {
-    public bool success { get; set; }
-    public string message { get; set; }
-    public string ownerid { get; set; }
-    public JObject info { get; set; }
+    [DataMember] public bool success { get; set; }
+    [DataMember] public string message { get; set; }
+    [DataMember] public string ownerid { get; set; }
+    [DataMember] public info_structure info { get; set; }
+    [DataMember] public string sessionid { get; set; }
+    [DataMember] public appinfo_structure appinfo { get; set; }
+
 }
 
-// User data
+[DataContract]
+public class appinfo_structure
+{
+    [DataMember] public string name { get; set; }
+    [DataMember] public string version { get; set; }
+}
+
+
+[DataContract]
+public class info_structure
+{
+    [DataMember] public string username { get; set; }
+    [DataMember] public string subscription { get; set; }
+    [DataMember] public long expiry { get; set; }
+    [DataMember] public string ip { get; set; }
+    [DataMember] public string hwid { get; set; }
+    [DataMember] public long createdate { get; set; }
+    [DataMember] public long lastlogin { get; set; }
+    [DataMember] public long timeleft { get; set; }
+}
+
+[DataContract]
 public class user_data_structure
 {
-    public string username { get; set; }
-    public string subscription { get; set; }
-
-    private long _expirationUnix;
-    public long expiration
-    {
-        get => _expirationUnix;
-        set
-        {
-            _expirationUnix = value;
-            ExpirationDate = DateTimeOffset.FromUnixTimeSeconds(value).DateTime;
-        }
-    }
-    public DateTime ExpirationDate { get; private set; }
-
-    public string ip { get; set; }
-    public string hwid { get; set; }
-    public DateTime CreationDate { get; set; }
-    public DateTime LastLoginDate { get; set; }
-    public long timeleft { get; set; }
-
-    public List<subscription_structure> subscriptions { get; set; }
+    [DataMember] public string username { get; set; }
+    [DataMember] public string subscription { get; set; }
+    [DataMember] public long expiration { get; set; }
+    [DataMember] public string ip { get; set; }
+    [DataMember] public string hwid { get; set; }
+    [DataMember] public DateTime CreationDate { get; set; }
+    [DataMember] public DateTime LastLoginDate { get; set; }
+    [DataMember] public long timeleft { get; set; }
+    [DataMember] public List<subscription_structure> subscriptions { get; set; }
 }
 
-// Subscription
+[DataContract]
 public class subscription_structure
 {
-    public string key { get; set; }
-    public string subscription { get; set; }
+    [DataMember] public string key { get; set; }
+    [DataMember] public string subscription { get; set; }
 
-    private long _expirationUnix;
-    public long expiration
+    // Yeh original Unix timestamp rahega (DB/JSON ke liye)
+    [DataMember]
+    public long expiration { get; set; }
+
+    // Yeh auto convert ho kar hamesha DateTime dega
+    public DateTime ExpirationDate
     {
-        get => _expirationUnix;
-        set
+        get
         {
-            _expirationUnix = value;
-            ExpirationDate = DateTimeOffset.FromUnixTimeSeconds(value).DateTime;
+            return DateTimeOffset.FromUnixTimeSeconds(expiration).ToLocalTime().DateTime;
         }
     }
-    public DateTime ExpirationDate { get; private set; }
 }
