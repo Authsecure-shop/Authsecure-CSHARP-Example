@@ -11,22 +11,26 @@ namespace AuthSecure
     public partial class Login : Form
     {
 
-        public static api AuthSecureApp = new api
-        (
-            name: "", // App name
-            ownerid: "", // Account ID
-            secret: "", // App secret
-            version: "" // Application version
-        );
+        //public static api AuthSecureApp = new api
+        //(
+        //    name: "", // App name
+        //    ownerid: "", // Account ID
+        //    secret: "", // App secret
+        //    version: "" // Application version
+        //);
 
-
+        
 
         public Login()
         {
             InitializeComponent();
             Drag.MakeDraggable(this);
             AuthSecureApp.InitApiAsync();
+       
         }
+
+
+       
 
         private async void loginBtn_Click_1(object sender, EventArgs e)
         {
