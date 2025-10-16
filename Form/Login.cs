@@ -12,20 +12,21 @@ namespace AuthSecure
     {
 
         public static api AuthSecureApp = new api
-        (
-            name: "", // App name
-            ownerid: "", // Account ID
-            secret: "", // App secret
-            version: "" // Application version
-        );
+         (
+             name: "", // App name
+             ownerid: "", // Account ID
+             secret: "", // App secret
+             version: "" // Application version
+         );
 
-        
+
+
 
         public Login()
         {
             InitializeComponent();
             Drag.MakeDraggable(this);
-            AuthSecureApp.InitApiAsync();
+            AuthSecureApp.Init();
        
         }
 
@@ -34,7 +35,7 @@ namespace AuthSecure
 
         private async void loginBtn_Click_1(object sender, EventArgs e)
         {
-            await AuthSecureApp.LoginAsync(usernameField.Text, passwordField.Text);
+            await AuthSecureApp.login(usernameField.Text, passwordField.Text);
             if (AuthSecureApp.response.success)
             {
 
@@ -55,7 +56,7 @@ namespace AuthSecure
                 email = null;
             }
 
-            await AuthSecureApp.RegisterAsync(usernameField.Text, passwordField.Text, keyField.Text, email);
+            await AuthSecureApp.register(usernameField.Text, passwordField.Text, keyField.Text, email);
             if (AuthSecureApp.response.success)
             {
                 Main main = new Main();

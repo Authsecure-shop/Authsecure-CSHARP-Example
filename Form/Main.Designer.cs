@@ -28,7 +28,6 @@ namespace AuthSecure
             this.fetchUserVarBtn = new System.Windows.Forms.Button();
             this.setUserVarBtn = new System.Windows.Forms.Button();
             this.checkSessionBtn = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -209,22 +208,13 @@ namespace AuthSecure
             this.checkSessionBtn.Text = "Check Session";
             this.checkSessionBtn.UseVisualStyleBackColor = false;
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(30, 643);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(290, 96);
-            this.richTextBox1.TabIndex = 103;
-            this.richTextBox1.Text = "";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(32)))));
-            this.ClientSize = new System.Drawing.Size(382, 797);
-            this.Controls.Add(this.richTextBox1);
+            this.ClientSize = new System.Drawing.Size(382, 602);
             this.Controls.Add(this.checkSessionBtn);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
@@ -270,6 +260,5 @@ namespace AuthSecure
         private System.Windows.Forms.Button fetchUserVarBtn;
         private System.Windows.Forms.Button setUserVarBtn;
         private System.Windows.Forms.Button checkSessionBtn;
-        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

@@ -25,7 +25,7 @@ namespace AuthSecure
         {
             InitializeComponent();
             Drag.MakeDraggable(this);
-           Login.AuthSecureApp.InitApiAsync();
+           Login.AuthSecureApp.Init();
         }
 
 
