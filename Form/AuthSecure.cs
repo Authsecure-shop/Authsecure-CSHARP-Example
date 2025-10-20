@@ -172,7 +172,43 @@ public class api
         return false; // should never reach here
     }
 
-
+public async Task check()
+{
+    using (HttpClient client = new HttpClient())
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(sessionid))
+            {
+                response = new response_structure
+                {
+                    success = false,
+                    message = "Session ID is missing!"
+                };
+                Environment.Exit(0);
+                return;
+            }
+            var postData = new Dictionary<string, string>
+            {
+                ["sessionid"] = sessionid
+            };
+            var content = new FormUrlEncodedContent(postData);
+            var res = await client.PostAsync("https://authsecure.shop/post/session.php", content);
+            string resStr = await res.Content.ReadAsStringAsync();
+            response = await DeserializeJsonAsync<response_structure>(resStr);
+            if (response == null || !response.success)
+            {
+                string msg = response?.message ?? "Invalid session response.";
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("[Session] Valid ✅");
+            }
+        }
+        catch (Exception ex){Environment.Exit(0);}
+    }
+}
 
 
     /// <summary>
@@ -782,4 +818,5 @@ public class subscription_structure
             return DateTimeOffset.FromUnixTimeSeconds(expiration).ToLocalTime().DateTime;
         }
     }
+
 }
