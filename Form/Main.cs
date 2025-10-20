@@ -75,5 +75,13 @@ namespace AuthSecure
             MessageBox.Show(Login.AuthSecureApp.response_var.message); // API response
 
         }
+
+        private async void checkSessionBtn_Click(object sender, EventArgs e)
+        {
+            await Login.AuthSecureApp.check();
+            MessageBox.Show(Login.AuthSecureApp.response.message);
+
+
+        }
     }
 }

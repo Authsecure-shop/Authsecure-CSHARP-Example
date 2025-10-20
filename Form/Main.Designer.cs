@@ -207,6 +207,7 @@ namespace AuthSecure
             this.checkSessionBtn.TabIndex = 102;
             this.checkSessionBtn.Text = "Check Session";
             this.checkSessionBtn.UseVisualStyleBackColor = false;
+            this.checkSessionBtn.Click += new System.EventHandler(this.checkSessionBtn_Click);
             // 
             // Main
             // 
