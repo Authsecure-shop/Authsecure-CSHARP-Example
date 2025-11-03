@@ -2,21 +2,13 @@
 
 # AuthSecure-CSHARP-Example Information
 
-AuthSecure C# example SDK for [https://AuthSecure.cc](https://AuthSecure.cc) license key API auth.
+AuthSecure C# example SDK for [https://AuthSecure.cc](https://AuthSecure.shop) license key API auth.
 
----
 
-### 🎥 Tutorial
-
-How to use this example & how to add AuthSecure to **your own project**:
-[https://www.youtube.com/watch?v=5x4YkTmFH-U](https://www.youtube.com/watch?v=5x4YkTmFH-U)
-
----
 
 ### 🐞 Bugs / Issues
 
 If using the example with *no major edits* and facing issues, report here:
-[https://AuthSecure.cc/app/?page=forms](https://AuthSecure.cc/app/?page=forms)
 
 > **Note:** They do **not** provide support for adding AuthSecure to *your own* project code.
 
@@ -56,7 +48,6 @@ Some ISPs block `AuthSecure.com` & `AuthSecure.win`.
 Use **dashboard: `AuthSecure.cc`**
 
 For API → **Use your own custom domain**
-Guide: [https://www.youtube.com/watch?v=a2SROFJ0eYc](https://www.youtube.com/watch?v=a2SROFJ0eYc)
 
 ---
 
@@ -126,9 +117,5 @@ Agar tum chaho to main **isi README me badges + banner logo + UI screenshots** a
 
 Just say:
 
-```
 
-make it fancy ✨
-
-```
 ```
