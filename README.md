@@ -1,14 +1,14 @@
 ---
 
-# KeyAuth-CSHARP-Example Information
+# AuthSecure-CSHARP-Example Information
 
-KeyAuth C# example SDK for [https://keyauth.cc](https://keyauth.cc) license key API auth.
+AuthSecure C# example SDK for [https://AuthSecure.cc](https://AuthSecure.cc) license key API auth.
 
 ---
 
 ### 🎥 Tutorial
 
-How to use this example & how to add KeyAuth to **your own project**:
+How to use this example & how to add AuthSecure to **your own project**:
 [https://www.youtube.com/watch?v=5x4YkTmFH-U](https://www.youtube.com/watch?v=5x4YkTmFH-U)
 
 ---
@@ -16,9 +16,9 @@ How to use this example & how to add KeyAuth to **your own project**:
 ### 🐞 Bugs / Issues
 
 If using the example with *no major edits* and facing issues, report here:
-[https://keyauth.cc/app/?page=forms](https://keyauth.cc/app/?page=forms)
+[https://AuthSecure.cc/app/?page=forms](https://AuthSecure.cc/app/?page=forms)
 
-> **Note:** They do **not** provide support for adding KeyAuth to *your own* project code.
+> **Note:** They do **not** provide support for adding AuthSecure to *your own* project code.
 
 ---
 
@@ -30,7 +30,7 @@ If using the example with *no major edits* and facing issues, report here:
 
 ---
 
-## 📜 License Notice (KeyAuth - Elastic License 2.0)
+## 📜 License Notice (AuthSecure - Elastic License 2.0)
 
 You **cannot**:
 
@@ -40,32 +40,32 @@ You **cannot**:
 
 ---
 
-## 🌍 What is KeyAuth?
+## 🌍 What is AuthSecure?
 
-KeyAuth is an authentication system with cloud hosting & client SDKs for:
+AuthSecure is an authentication system with cloud hosting & client SDKs for:
 
 C#, C++, Python, Java, JS, VB.NET, PHP, Rust, Go, Lua, Ruby, Perl.
 
-Join Telegram: [https://t.me/keyauth](https://t.me/keyauth)
+Join Telegram: [https://t.me/AuthSecure](https://t.me/AuthSecure)
 
 ---
 
 ## ⚠ Customer Connection Issues?
 
-Some ISPs block `keyauth.com` & `keyauth.win`.
-Use **dashboard: `keyauth.cc`**
+Some ISPs block `AuthSecure.com` & `AuthSecure.win`.
+Use **dashboard: `AuthSecure.cc`**
 
 For API → **Use your own custom domain**
 Guide: [https://www.youtube.com/watch?v=a2SROFJ0eYc](https://www.youtube.com/watch?v=a2SROFJ0eYc)
 
 ---
 
-## 🔧 `KeyAuthApp` Instance Setup
+## 🔧 `AuthSecureApp` Instance Setup
 
 Replace this in Program.cs / Login.cs:
 
 ```csharp
-public static api KeyAuthApp = new api(
+public static api AuthSecureApp = new api(
     name: "example",
     ownerid: "JjPMBVlIOd",
     secret: "db40d586f4b18...",
@@ -76,8 +76,8 @@ public static api KeyAuthApp = new api(
 ### Initialize:
 
 ```csharp
-KeyAuthApp.init();
-if (!KeyAuthApp.response.success)
+AuthSecureApp.init();
+if (!AuthSecureApp.response.success)
     Environment.Exit(0);
 ```
 
@@ -86,13 +86,13 @@ if (!KeyAuthApp.response.success)
 ## 🔐 Login Example
 
 ```csharp
-KeyAuthApp.login(username, password);
+AuthSecureApp.login(username, password);
 ```
 
 ## 🔑 License-Based Login
 
 ```csharp
-KeyAuthApp.license(key);
+AuthSecureApp.license(key);
 ```
 
 ---
@@ -100,7 +100,7 @@ KeyAuthApp.license(key);
 ## 🗂 User Information Example
 
 ```csharp
-Console.WriteLine(KeyAuthApp.user_data.username);
+Console.WriteLine(AuthSecureApp.user_data.username);
 ```
 
 ---
