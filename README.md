@@ -1,3 +1,12 @@
+Perfect ✅
+Main **tumhara AuthSecure-CSHARP-Example README** + **yeh pura KeyAuth reference block** **ek hi README.md** me **professional layout** me merge kar deta hoon.
+
+**→ Tum bas copy → paste → README.md me save kar dena.**
+
+---
+
+## ✅ Final Combined `README.md`
+
 ```markdown
 # AuthSecure-CSHARP-Example : Please star 🌟
 
@@ -45,17 +54,65 @@ AuthSecure-CSHARP-Example/
 
 ## ⚙ Setup
 
-# AuthSecure-CSHARP-Example Information
+1. Open solution in **Visual Studio**
+2. Open **AuthSecure.cs**
+3. Replace your application credentials:
 
-AuthSecure C# example SDK for [https://AuthSecure.cc](https://AuthSecure.cc) license key API auth.
+```csharp
+string APP_NAME = "Your-App-Name";
+string OWNER_ID = "Your-Owner-ID";
+string VERSION  = "1.0";
+string API_URL  = "https://your-api-server/";
+string SECRET   = "Your-Secret-Key";
+````
 
+4. Build & Run ✅
+
+---
+
+## ✅ Successful Login Output Example
+
+```
+Login Successful ✅
+User: test_user
+Plan: Premium
+Expires: 2026-01-10
+Device Verified ✓
+```
+
+---
+
+## ❌ Common Errors
+
+| Error         | Reason                        |
+| ------------- | ----------------------------- |
+| INVALID_LOGIN | Wrong username or password    |
+| HWID_MISMATCH | Tried login from another PC   |
+| EXPIRED       | Subscription expired          |
+| SERVER_DOWN   | Authentication server offline |
+| NO_NETWORK    | Internet problem              |
+
+---
+
+# KeyAuth-CSHARP-Example Information
+
+KeyAuth C# example SDK for [https://keyauth.cc](https://keyauth.cc) license key API auth.
+
+---
+
+### 🎥 Tutorial
+
+How to use this example & how to add KeyAuth to **your own project**:
+[https://www.youtube.com/watch?v=5x4YkTmFH-U](https://www.youtube.com/watch?v=5x4YkTmFH-U)
+
+---
 
 ### 🐞 Bugs / Issues
 
 If using the example with *no major edits* and facing issues, report here:
-[https://AuthSecure.cc/app/?page=forms](https://AuthSecure.cc/app/?page=forms)
+[https://keyauth.cc/app/?page=forms](https://keyauth.cc/app/?page=forms)
 
-> **Note:** They do **not** provide support for adding AuthSecure to *your own* project code.
+> **Note:** They do **not** provide support for adding KeyAuth to *your own* project code.
 
 ---
 
@@ -67,7 +124,7 @@ If using the example with *no major edits* and facing issues, report here:
 
 ---
 
-## 📜 License Notice (AuthSecure - Elastic License 2.0)
+## 📜 License Notice (KeyAuth - Elastic License 2.0)
 
 You **cannot**:
 
@@ -77,32 +134,32 @@ You **cannot**:
 
 ---
 
-## 🌍 What is AuthSecure?
+## 🌍 What is KeyAuth?
 
-AuthSecure is an authentication system with cloud hosting & client SDKs for:
+KeyAuth is an authentication system with cloud hosting & client SDKs for:
 
 C#, C++, Python, Java, JS, VB.NET, PHP, Rust, Go, Lua, Ruby, Perl.
 
-Join Telegram: [https://t.me/AuthSecure](https://t.me/AuthSecure)
+Join Telegram: [https://t.me/keyauth](https://t.me/keyauth)
 
 ---
 
 ## ⚠ Customer Connection Issues?
 
-Some ISPs block `AuthSecure.com` & `AuthSecure.win`.
-Use **dashboard: `AuthSecure.cc`**
+Some ISPs block `keyauth.com` & `keyauth.win`.
+Use **dashboard: `keyauth.cc`**
 
 For API → **Use your own custom domain**
 Guide: [https://www.youtube.com/watch?v=a2SROFJ0eYc](https://www.youtube.com/watch?v=a2SROFJ0eYc)
 
 ---
 
-## 🔧 `AuthSecureApp` Instance Setup
+## 🔧 `KeyAuthApp` Instance Setup
 
 Replace this in Program.cs / Login.cs:
 
 ```csharp
-public static api AuthSecureApp = new api(
+public static api KeyAuthApp = new api(
     name: "example",
     ownerid: "JjPMBVlIOd",
     secret: "db40d586f4b18...",
@@ -113,8 +170,8 @@ public static api AuthSecureApp = new api(
 ### Initialize:
 
 ```csharp
-AuthSecureApp.init();
-if (!AuthSecureApp.response.success)
+KeyAuthApp.init();
+if (!KeyAuthApp.response.success)
     Environment.Exit(0);
 ```
 
@@ -123,13 +180,13 @@ if (!AuthSecureApp.response.success)
 ## 🔐 Login Example
 
 ```csharp
-AuthSecureApp.login(username, password);
+KeyAuthApp.login(username, password);
 ```
 
 ## 🔑 License-Based Login
 
 ```csharp
-AuthSecureApp.license(key);
+KeyAuthApp.license(key);
 ```
 
 ---
@@ -137,7 +194,7 @@ AuthSecureApp.license(key);
 ## 🗂 User Information Example
 
 ```csharp
-Console.WriteLine(AuthSecureApp.user_data.username);
+Console.WriteLine(KeyAuthApp.user_data.username);
 ```
 
 ---
