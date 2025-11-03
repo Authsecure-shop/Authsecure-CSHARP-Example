@@ -49,7 +49,7 @@ You are **allowed to**:
 
 AuthSecure is an authentication system with cloud hosting & client SDKs for:
 
-C#, C++, Python, Java, JS, VB.NET, PHP, Rust, Go, Lua, Ruby, Perl.
+C#, C++, Java.
 
 Join Telegram: [https://t.me/AuthSecure](https://t.me/AuthSecure)
 
