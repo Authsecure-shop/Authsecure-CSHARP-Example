@@ -20,17 +20,30 @@ If using the example with *no major edits* and facing issues, report here:
 * Add integrity checks to detect memory tampering
 * Avoid writing downloaded files to disk — run them directly in memory
 
+## 📜 License Notice (AuthSecure - MTM License)
+
+The **AuthSecure Authentication System** is protected under the MTM License Agreement.
+
+You are **NOT allowed to**:
+
+* Re-sell, re-distribute, leak, or upload this system or source code publicly  
+* Bypass, crack, patch, reverse engineer, or remove the authentication / HWID protection  
+* Remove or modify AuthSecure branding, credits, or identification  
+* Use this system in illegal software, public cheat loaders, or shared cracked tools  
+
+You are **allowed to**:
+
+* Modify UI and visual elements for your own project  
+* Use this system in private, commercial, or client-based applications  
+* Integrate the security logic into your own software or service  
+
+> If this system is leaked, shared, or illegally re-sold —  
+> **Access may be revoked**, **HWID permanently blacklisted**, and **Legal action may be taken.**
+
 ---
 
-## 📜 License Notice (AuthSecure - Elastic License 2.0)
+© AuthSecure 2025 — All Rights Reserved.
 
-You **cannot**:
-
-* Provide hosted/"as a service" access
-* Circumvent license protections
-* Modify/remove copyright labels
-
----
 
 ## 🌍 What is AuthSecure?
 
