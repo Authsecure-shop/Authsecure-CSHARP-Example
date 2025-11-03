@@ -2,7 +2,7 @@
 
 # AuthSecure-CSHARP-Example Information
 
-AuthSecure C# example SDK for [https://AuthSecure.cc](https://AuthSecure.shop) license key API auth.
+AuthSecure C# example SDK for [https://AuthSecure.shop](https://AuthSecure.shop) license key API auth.
 
 
 
