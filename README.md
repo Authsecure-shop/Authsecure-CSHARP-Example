@@ -1,5 +1,3 @@
-## ✅ Final Combined `README.md`
-
 ```markdown
 # AuthSecure-CSHARP-Example : Please star 🌟
 
