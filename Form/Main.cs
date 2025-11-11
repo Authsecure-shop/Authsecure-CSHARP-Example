@@ -28,7 +28,11 @@ namespace AuthSecure
            Login.AuthSecureApp.init();
         }
 
-
+        public static string UnixToDateTime(long unixTime)
+        {
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime).ToLocalTime().ToString();
+        }
         private async void Main_Load(object sender, EventArgs e)
         {
             userDataField.Items.Add($"Username: {Login.AuthSecureApp.user_data.username}");
@@ -85,4 +89,5 @@ namespace AuthSecure
         }
     }
 }
+
 
