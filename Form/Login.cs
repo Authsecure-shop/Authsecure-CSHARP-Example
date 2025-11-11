@@ -1,4 +1,4 @@
-﻿using Loader;
+using Loader;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -26,7 +26,7 @@ namespace AuthSecure
         {
             InitializeComponent();
             Drag.MakeDraggable(this);
-            AuthSecureApp.Init();
+            AuthSecureApp.init();
        
         }
 
@@ -35,7 +35,7 @@ namespace AuthSecure
 
         private async void loginBtn_Click_1(object sender, EventArgs e)
         {
-            await AuthSecureApp.login(usernameField.Text, passwordField.Text);
+             AuthSecureApp.login(usernameField.Text, passwordField.Text);
             if (AuthSecureApp.response.success)
             {
 
@@ -56,7 +56,7 @@ namespace AuthSecure
                 email = null;
             }
 
-            await AuthSecureApp.register(usernameField.Text, passwordField.Text, keyField.Text, email);
+             AuthSecureApp.register(usernameField.Text, passwordField.Text, keyField.Text, email);
             if (AuthSecureApp.response.success)
             {
                 Main main = new Main();
